@@ -1,0 +1,147 @@
+<?xml version="1.0"?>
+<root BTCPP_format="3" main_tree_to_execute="ExecuteRouteSegments">
+  <BehaviorTree ID="ExecuteRouteSegments">
+    <Fallback name="HpaRouteLoopOrComplete">
+      <Repeat num_cycles="-1" name="HpaRouteExecutionLoop">
+        <ReactiveFallback name="HpaSegmentOutcomeRouter">
+          <SubTreePlus
+            ID="HpaExternalBlockRecovery"
+            blocked_image_path="{blocked_image_path}"
+            capture_diagnostic="{capture_diagnostic}"
+            capture_success="{capture_success}"
+            execute_hpa_segment_action="{execute_hpa_segment_action}"
+            external_block_pending="{external_block_pending}"
+            failure_context="{failure_context}"
+            hpa_detail="{hpa_detail}"
+            hpa_phase="{hpa_phase}"
+            hpa_replan_attempt="{hpa_replan_attempt}"
+            hpa_session="{hpa_session}"
+            navigation_announcement_topic="{navigation_announcement_topic}"
+            navigation_context="{navigation_context}"
+            navigation_frame_id="{navigation_frame_id}"
+            planning_result="{planning_result}"
+            route_revision="{route_revision}"
+            vlm_response="{vlm_response}"
+            vlm_result="{vlm_result}"/>
+          <Sequence name="ExecuteCurrentHpaSegment">
+            <SelectHpaSegment
+              session="{hpa_session}"
+              operation="{hpa_operation}"
+              phase="{hpa_phase}"
+              detail="{hpa_detail}"/>
+            <EnsureHpaRollingWindow
+              session="{hpa_session}"
+              phase="{hpa_phase}"
+              detail="{hpa_detail}"/>
+            <SwitchHpaMapIfRequired
+              session="{hpa_session}"
+              phase="{hpa_phase}"
+              detail="{hpa_detail}"/>
+            <WaitForHpaCostmap
+              session="{hpa_session}"
+              topic="/local_costmap/costmap_raw"
+              timeout_sec="40.0"
+              allow_timeout="true"
+              phase="{hpa_phase}"
+              detail="{hpa_detail}"/>
+            <ExecuteHpaSegmentAction
+              session="{hpa_session}"
+              server_name="{execute_hpa_segment_action}"
+              timeout_sec="{waypoint_task_timeout_sec}"
+              outcome="{hpa_outcome}"
+              phase="{hpa_phase}"
+              detail="{hpa_detail}"
+              distance_remaining="{navigation_distance_remaining}"
+              navigation_time_sec="{hpa_navigation_time_sec}"/>
+            <ClassifyHpaSegmentOutcome
+              session="{hpa_session}"
+              outcome="{hpa_outcome}"
+              phase="{hpa_phase}"
+              detail="{hpa_detail}"/>
+            <VerifyHpaGoalReached
+              session="{hpa_session}"
+              map_frame="{navigation_frame_id}"
+              robot_frame="base_link"
+              position_tolerance="0.30"
+              align_yaw="false"
+              stable_samples_required="{stable_samples_required}"
+              timeout_sec="2.0"
+              arrival_verified="{arrival_verified}"
+              position_error="{position_error}"
+              yaw_error="{yaw_error}"
+              stable_samples="{stable_samples}"
+              detail="{hpa_detail}"
+              arrival_reason="{arrival_reason}"/>
+            <CommitHpaSegmentProgress
+              session="{hpa_session}"
+              phase="{hpa_phase}"
+              detail="{hpa_detail}"/>
+          </Sequence>
+          <Sequence name="HandleSwitchTransient">
+            <IsHpaOutcome session="{hpa_session}" expected="SWITCH_TRANSIENT"/>
+            <ClassifyHpaSegmentOutcome
+              session="{hpa_session}"
+              outcome="{hpa_outcome}"
+              phase="{hpa_phase}"
+              detail="{hpa_detail}"/>
+            <RetryHpaSwitchTransient
+              session="{hpa_session}"
+              phase="{hpa_phase}"
+              detail="{hpa_detail}"/>
+          </Sequence>
+          <Sequence name="HandleFinalRecovery">
+            <ClassifyHpaSegmentOutcome
+              session="{hpa_session}"
+              outcome="{hpa_outcome}"
+              phase="{hpa_phase}"
+              detail="{hpa_detail}"/>
+            <NeedsHpaFinalRecovery session="{hpa_session}"/>
+            <AttemptHpaFinalRecovery
+              session="{hpa_session}"
+              phase="{hpa_phase}"
+              detail="{hpa_detail}"/>
+          </Sequence>
+          <Sequence name="HandleHpaReplan">
+            <ClassifyHpaSegmentOutcome
+              session="{hpa_session}"
+              outcome="{hpa_outcome}"
+              phase="{hpa_phase}"
+              detail="{hpa_detail}"/>
+            <UpdateHpaBlockedMemory
+              session="{hpa_session}"
+              phase="{hpa_phase}"
+              detail="{hpa_detail}"/>
+            <ReplanHpaRoute
+              session="{hpa_session}"
+              phase="{hpa_phase}"
+              detail="{hpa_detail}"
+              replan_attempt="{hpa_replan_attempt}"/>
+            <AcquireHpaRobotPose
+              session="{hpa_session}"
+              map_frame="{navigation_frame_id}"
+              robot_frame="base_link"
+              timeout_sec="2.0"
+              phase="{hpa_phase}"
+              detail="{hpa_detail}"/>
+            <PlanHpaRoute
+              session="{hpa_session}"
+              service_name="/hpa_planner/plan_path"
+              timeout_sec="10.0"
+              planning_result="{planning_result}"
+              phase="{hpa_phase}"
+              detail="{hpa_detail}"
+              route_revision="{route_revision}"/>
+            <WaitForHpaCostmap
+              session="{hpa_session}"
+              topic="/local_costmap/costmap_raw"
+              timeout_sec="40.0"
+              allow_timeout="true"
+              phase="{hpa_phase}"
+              detail="{hpa_detail}"/>
+          </Sequence>
+        </ReactiveFallback>
+      </Repeat>
+      <IsHpaRouteComplete session="{hpa_session}"/>
+    </Fallback>
+  </BehaviorTree>
+</root>

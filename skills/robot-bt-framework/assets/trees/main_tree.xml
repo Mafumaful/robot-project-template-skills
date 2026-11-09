@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<root BTCPP_format="3" main_tree_to_execute="UnifiedMissionRoot">
+  <BehaviorTree ID="UnifiedMissionRoot">
+    <ReactiveFallback name="UnifiedMissionRoot">
+      <Sequence name="StopBranch">
+        <IsStopRequested state="{stop_requested}" expected="true"/>
+        <ForceSuccess>
+          <Sequence name="StopActiveNavigation">
+            <CancelNavigation server_name="{navigate_to_pose_action}" failure_context="{failure_context}"/>
+            <WaitUntilStopped timeout_sec="5.0" failure_context="{failure_context}"/>
+          </Sequence>
+        </ForceSuccess>
+      </Sequence>
+      <Sequence name="PauseBranch">
+        <IsPauseRequested state="{pause_requested}" expected="true"/>
+        <ForceSuccess>
+          <Sequence name="PauseActiveNavigation">
+            <CancelNavigation server_name="{navigate_to_pose_action}" failure_context="{failure_context}"/>
+            <WaitUntilStopped timeout_sec="5.0" failure_context="{failure_context}"/>
+          </Sequence>
+        </ForceSuccess>
+      </Sequence>
+      <Sequence name="ActiveMissionBranch">
+        <IsMissionActive state="{mission_running}" expected="true"/>
+        <SubTreePlus
+          ID="HpaNavigationMission"
+          blocked_image_path="{blocked_image_path}"
+          capture_diagnostic="{capture_diagnostic}"
+          capture_success="{capture_success}"
+          execute_hpa_segment_action="{execute_hpa_segment_action}"
+          external_block_pending="{external_block_pending}"
+          failure_context="{failure_context}"
+          hpa_detail="{hpa_detail}"
+          hpa_goal="{hpa_goal}"
+          hpa_navigation_time_sec="{hpa_navigation_time_sec}"
+          hpa_operation="{hpa_operation}"
+          hpa_outcome="{hpa_outcome}"
+          hpa_phase="{hpa_phase}"
+          hpa_replan_attempt="{hpa_replan_attempt}"
+          hpa_session="{hpa_session}"
+          hpa_start="{hpa_start}"
+          arrival_verified="{arrival_verified}"
+          position_error="{position_error}"
+          yaw_error="{yaw_error}"
+          stable_samples_required="{stable_samples_required}"
+          stable_samples="{stable_samples}"
+          arrival_reason="{arrival_reason}"
+          map_switching_enabled="{map_switching_enabled}"
+          nav_retry_max="{nav_retry_max}"
+          navigate_to_pose_action="{navigate_to_pose_action}"
+          navigation_distance_remaining="{navigation_distance_remaining}"
+          navigation_announcement_topic="{navigation_announcement_topic}"
+          navigation_context="{navigation_context}"
+          navigation_frame_id="{navigation_frame_id}"
+          planning_result="{planning_result}"
+          route_revision="{route_revision}"
+          vlm_response="{vlm_response}"
+          vlm_result="{vlm_result}"
+          waypoint_task_timeout_sec="{waypoint_task_timeout_sec}"/>
+      </Sequence>
+      <Sequence name="IdleBranch">
+        <IsMissionInactive state="{mission_running}" expected="false"/>
+        <IsPauseClear state="{pause_requested}" expected="false"/>
+        <IsStopClear state="{stop_requested}" expected="false"/>
+      </Sequence>
+    </ReactiveFallback>
+  </BehaviorTree>
+</root>
