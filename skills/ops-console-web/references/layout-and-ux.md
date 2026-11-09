@@ -5,7 +5,7 @@
 | 路由 | 用途 | 说明 |
 |---|---|---|
 | `/` | 主控制台 | 三个标签：导航测试 / 底层·版本 / 参数调优 |
-| `/legacy` | 旧版布局 | 旧系统（flask_ros, Bootstrap）的界面搬到新 API 上，给习惯旧界面的人；`?ui=legacy` 或 localStorage `cdm-ui` 记住选择 |
+| `/legacy` | 旧版布局 | 旧系统（flask_ros, Bootstrap）的界面搬到新 API 上，给习惯旧界面的人；`?ui=legacy` 或 localStorage `robot-ui` 记住选择 |
 | `/debug` | 模块调试 | 左侧 220px 模块列表（带状态圆点）+ 右侧模块页；每个模块配测试手册 |
 | `/replay` | 数据包回放 | 运行卡片列表、速度链图表、地图回放、行为树窗口 |
 
@@ -33,7 +33,7 @@ body 级：浮动摇杆面板 + 🎮 召回按钮、<dialog> 改 Domain、<dialo
 
 ## 3. 前端实现细节
 
-- 每个文件是 IIFE 或共享少量全局（`$ api node toast state`）；跨文件挂钩用 `window.CdmOta.mount(root, {...})`、`window.onSpeechShow` 这类显式接口。
+- 每个文件是 IIFE 或共享少量全局（`$ api node toast state`）；跨文件挂钩用 `window.RobotOta.mount(root, {...})`、`window.onSpeechShow` 这类显式接口。
 - DOM 用 `replaceChildren()/append()` 构建；`innerHTML` 只在必须时用，并经过 `esc()` 转义。
 - 2D 地图：`<canvas>` + DPR 感知的 `sizeCanvas()`；世界↔像素变换要包含地图原点的 yaw；指针事件：拖动平移、Shift 框选放大；选点/测量/路线/重定位几种模式**互斥**，各有 `setX(on)`；log2 缩放滑块；“好看”步长的网格和比例尺。
 - 3D：`vendor/three.min.js` r128 + OrbitControls；后端给 gzip 的 int16 厘米点云，元数据放响应头（`X-Bounds/X-Age/X-Note/X-Frame`）。
@@ -66,7 +66,7 @@ body 级：浮动摇杆面板 + 🎮 召回按钮、<dialog> 改 Domain、<dialo
 1. **一切操作带进度条**。POST 自动顶部条（>150 ms 才显示，`LABEL` 表把路径映射成中文“正在保存地图…”）；后台作业 `progress.job(host, job)` 显示“第 k/n 步 · 步骤名”；进度动画相位用 `animationDelay=-(Date.now()%1200)ms`，重绘不跳。
 2. **危险操作双重确认**：前端多行 `confirm()` 写“会做什么 / 前提 / 不会做什么”，后端 `confirm is not True → 400`。
 3. **默认只读**：`--demo` 模式所有控制返回 `409 只读 UI 展示模式`；旧系统占用硬件时进入“观察模式”，控件禁用并写明原因。
-4. **可关闭的提示**：banner、定位提示、切图提示都有 ×，关闭状态按浏览器记住（`cdm.*Dismissed`），但紧急状态不可关。
+4. **可关闭的提示**：banner、定位提示、切图提示都有 ×，关闭状态按浏览器记住（`robot.*Dismissed`），但紧急状态不可关。
 5. **测试手册**：调试模块右上 `?`（或按 `h`）打开浮动手册：目的 → 前提 → 步骤（操作→预期，可勾选）→ 常见问题（现象/原因/检查）。手册数据放 `debug-manuals.js`，严格 JSON，测试会解析它。
 6. **诚实状态**：`—` 表示未知，“旧值/旧状态”表示过期；定位无效机器人画灰；每个状态给 `hint`（下一步该做什么）。
 7. **死人开关**：心跳；`visibilitychange/pagehide` → `sendBeacon('/api/stop')`；摇杆松手、页面隐藏清空按键。

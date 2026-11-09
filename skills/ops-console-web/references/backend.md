@@ -16,7 +16,7 @@
 - `reply()`：JSON > 2 KiB 时 gzip；`Cache-Control:no-store`、`X-Content-Type-Options:nosniff`、`X-Frame-Options:DENY`；`safe_json` 把 NaN/Inf 去掉。
 - 异常映射：`ValueError/KeyError/TypeError → 400`，`PermissionError → 401 {error, login:true}`，其它 → 500；**错误消息就是中文异常文本**，所以抛异常时直接写给操作员看的话。
 - `log_message` 屏蔽高频轮询路径，日志只留有意义的请求。
-- CLI：`--host --port 8090 --workspace --output --data ~/cdm_data --deadman --demo …`。
+- CLI：`--host --port 8090 --workspace --output --data ~/robot_data --deadman --demo …`。
 
 ## 2. 模块划分
 
@@ -61,17 +61,17 @@ def _set(**fields):            # 在锁内
 ## 5. 鉴权（`assets/backend/auth.py`）
 
 - PBKDF2-SHA256 20 万次；文件 `<data>/auth/{password,sessions.json,page_token}`，0600，tmp+replace 写入。
-- Cookie `cdm_session; HttpOnly; SameSite=Strict`，一年空闲期（现场设备登录一次就够）。
+- Cookie `robot_session; HttpOnly; SameSite=Strict`，一年空闲期（现场设备登录一次就够）。
 - 每 IP 每分钟最多 10 次登录尝试。
 - `OPEN_POSTS`：急停、停止、心跳、登录/登出、松开摇杆、暂停、参数预览（只算 diff）——**安全动作永远不能被登录挡住**。
 - 默认密码模板里改成环境变量 `CONSOLE_DEFAULT_PASSWORD`；每个项目自己定，首次登录后改。
 
 ## 6. 数据与部署
 
-- 数据目录 `--data ~/cdm_data`：`auth/`、`selection.json`、`maps/`、`log/`、`backup/`、缓存、各种小 json 配置；运行输出 `--output ~/nav_test_runs/<run_id>/`（含 `run.json`、录包、日志）。
-- 代码目录在设备上是一个独立 checkout（`~/cdm_console`）。
+- 数据目录 `--data ~/robot_data`：`auth/`、`selection.json`、`maps/`、`log/`、`backup/`、缓存、各种小 json 配置；运行输出 `--output ~/nav_test_runs/<run_id>/`（含 `run.json`、录包、日志）。
+- 代码目录在设备上是一个独立 checkout（`~/robot_console`）。
 - `start_console.sh` 是 systemd 的 ExecStart：source ROS、读 domain id、导出 DDS 环境、`exec python3 server.py …`。
-- `units.py` 渲染 systemd 用户单元：`cdm-console.service`（`Restart=on-failure`）、每个节点组 `cdm-<group>.service`（`KillMode=control-group`、`KillSignal=SIGINT`、`TimeoutStopSec=20`、**`Restart=no` 让崩溃被看见**，`Requires/After/Conflicts` 来自 `groups.py`），汇总到 `cdm-stack.target`。
+- `units.py` 渲染 systemd 用户单元：`robot-console.service`（`Restart=on-failure`）、每个节点组 `robot-<group>.service`（`KillMode=control-group`、`KillSignal=SIGINT`、`TimeoutStopSec=20`、**`Restart=no` 让崩溃被看见**，`Requires/After/Conflicts` 来自 `groups.py`），汇总到 `robot-stack.target`。
 - `deploy/install_units.sh` 只安装和校验，不擅自 enable；`deploy/rollback_to_<old>.sh` 回到旧系统，按部署前节点列表快照做 diff。
 - 只改静态文件（html/js/css）时**只替换静态文件、不重启服务**；改 Python 才重启。
 

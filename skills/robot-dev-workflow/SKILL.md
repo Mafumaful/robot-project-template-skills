@@ -32,7 +32,7 @@ description: 机器人/硬件项目的工程流程范本（来自 robot）：wor
 - 控制台单元测试 682 个全部通过（/usr/bin/python3 -m unittest discover -s tests）
 - 浏览器检查：明/暗主题截图，无 JS 异常，无运动类 POST
 ## 验证
-- 已部署 Mini6Test 2026-11-09 10:19（静态替换，未重启）
+- 已部署 robot 2026-11-09 10:19（静态替换，未重启）
 - 未验证：真机按键实测
 ```
 

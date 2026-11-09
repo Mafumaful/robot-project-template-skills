@@ -7,7 +7,7 @@ description: 以 robot（ROS 2 导盲机器人）为范本的项目总蓝图：�
 
 用户把 robot 定为之后所有项目的范本。新项目开工时：先读本文件定架构和原则，再按需加载子技能。
 
-**继承的是模式，不是数值。** 本技能和子技能里的具体端口（8090/8765/5000）、话题名、DOMAIN_ID、阈值、主机别名（Mini6Test、server5090）、目录（~/cdm_data、~/pkg_bak）都是范本项目的实例。新项目照搬结构和原则，具体值要按新项目重新定，未知的写成 `<待定>` 占位并列进“需要你决定的事”。
+**继承的是模式，不是数值。** 本技能和子技能里的具体端口（8090/8765/5000）、话题名、DOMAIN_ID、阈值、主机别名（robot、build-server）、目录（~/robot_data、~/pkg_bak）都是范本项目的实例。新项目照搬结构和原则，具体值要按新项目重新定，未知的写成 `<待定>` 占位并列进“需要你决定的事”。
 
 | 子技能 | 何时加载 |
 |---|---|
@@ -76,7 +76,7 @@ description: 以 robot（ROS 2 导盲机器人）为范本的项目总蓝图：�
 
 ## 4. 命名约定
 
-- **话题**：绝对路径、按子系统分根命名空间：`/mission/*`、`/navigation_bt/*`、`/hpa_planner/*`、`/hpa_executor/*`、`/speech/{say,ask,stop,events}`、`/sa_mppi/{obstacle_hold,perf_stats}`、`/tof_8x8/{grid,points,obstacle_points,health}`、`/cdm/max_speed{,/set,/adjust}`（运维控制台自有前缀）、`/ctl/cmd_vel`（最终速度）、`/control_mode`。
+- **话题**：绝对路径、按子系统分根命名空间：`/mission/*`、`/navigation_bt/*`、`/hpa_planner/*`、`/hpa_executor/*`、`/speech/{say,ask,stop,events}`、`/sa_mppi/{obstacle_hold,perf_stats}`、`/tof_8x8/{grid,points,obstacle_points,health}`、`/robot/max_speed{,/set,/adjust}`（运维控制台自有前缀）、`/ctl/cmd_vel`（最终速度）、`/control_mode`。
 - 外部可调的值同时给 `set` 和 `adjust` 两个话题（语音“快一点”用 adjust）。
 - 用标准消息就用标准（`nav2_msgs/SpeedLimit`），注意语义陷阱（0 = 不限速，停住用 1e-6）。
 - **ROS_DOMAIN_ID**：原则是“真机、仿真、每个隔离验收各用一个不同的 ID”，DDS 配置文件入库。（范本项目里是真机 130、仿真 30、验收 87/177——这些只是例子，新项目要自己选号并写进 README，不要照抄。）

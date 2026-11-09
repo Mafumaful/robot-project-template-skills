@@ -451,7 +451,7 @@ button.pp-tag.on{background:var(--primary-strong);color:#fff}
 #ll-teleop-state{margin:6px 0 0;min-height:0}
 #ll-teleop-state:empty{display:none}
 .ll-joy-hint{margin:8px 0 0;font-size:11px;line-height:1.5}
-/* joystick panel sub-pages: 遥控 | 单元 (systemd state of every cdm-* unit, restart) */
+/* joystick panel sub-pages: 遥控 | 单元 (systemd state of every robot-* unit, restart) */
 .ll-joy-tabs{display:flex;gap:4px;margin:0 0 10px;padding:3px;border-radius:10px;background:var(--card-2,#f3f4f8)}
 .ll-joy-tabs button{flex:1;margin:0;padding:4px 0;font-size:12px;border:0;border-radius:8px;background:transparent;color:var(--text-2,#444)}
 .ll-joy-tabs button.on{background:var(--card,#fff);color:var(--text,#111);font-weight:650;box-shadow:0 1px 2px #0002}

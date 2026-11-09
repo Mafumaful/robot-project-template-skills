@@ -3,11 +3,11 @@
 ## 只读快照（每个维护窗口开始前）
 
 ```bash
-T=~/cdm_window/$(date +%Y%m%d_%H%M%S); mkdir -p $T
+T=~/robot_window/$(date +%Y%m%d_%H%M%S); mkdir -p $T
 ps -eo pid,args > $T/ps.txt
 timeout 10 ros2 node list | sort > $T/nodes_before.txt
 systemctl --user list-units --no-pager > $T/units.txt
-readlink -f ~/cdm_data/maps/map.yaml > $T/map.txt
+readlink -f ~/robot_data/maps/map.yaml > $T/map.txt
 ```
 
 窗口结束时 diff 同一组信息，差异写进记录。

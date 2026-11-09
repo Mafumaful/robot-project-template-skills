@@ -40,7 +40,7 @@ def verify_password(password, stored):
 def session_from_cookie(header):
     for part in (header or '').split(';'):
         name, _, value = part.strip().partition('=')
-        if name == 'cdm_session':
+        if name == 'robot_session':
             return value
     return ''
 
@@ -52,8 +52,8 @@ def _write_private(file, text):
 
 def cookie_header(sid, clear=False):
     if clear:
-        return 'cdm_session=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0'
-    return f'cdm_session={sid}; Path=/; HttpOnly; SameSite=Strict; Max-Age={IDLE_S}'
+        return 'robot_session=; Path=/; HttpOnly; SameSite=Strict; Max-Age=0'
+    return f'robot_session={sid}; Path=/; HttpOnly; SameSite=Strict; Max-Age={IDLE_S}'
 
 
 class Auth:
