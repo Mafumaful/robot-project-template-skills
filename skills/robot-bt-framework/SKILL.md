@@ -1,11 +1,11 @@
 ---
 name: robot-bt-framework
-description: 机器人任务行为树（BehaviorTree.CPP v3 + ROS 2）框架范本，来自 Cyber Guide Dog 的 bt_xml_planner：XML 树如何分文件和命名、根节点 Stop/Pause/Active/Idle 优先级、黑板约定、插件节点（条件/同步/异步动作）写法、执行器(mission_bt_node)、到达契约、失败分类与恢复、快照/事件诊断、沙箱、gtest 与 Gazebo 验收。凡是新项目要用行为树编排机器人任务、导航、语音播报、多步流程、恢复策略，或要写/改 BT 节点、BT XML、任务执行器、BT 监控页面时，都要先用这个技能，哪怕用户只说“加个任务流程”“加个节点”“做个状态机”。
+description: 机器人任务行为树（BehaviorTree.CPP v3 + ROS 2）框架范本，来自 robot 的 bt_xml_planner：XML 树如何分文件和命名、根节点 Stop/Pause/Active/Idle 优先级、黑板约定、插件节点（条件/同步/异步动作）写法、执行器(mission_bt_node)、到达契约、失败分类与恢复、快照/事件诊断、沙箱、gtest 与 Gazebo 验收。凡是新项目要用行为树编排机器人任务、导航、语音播报、多步流程、恢复策略，或要写/改 BT 节点、BT XML、任务执行器、BT 监控页面时，都要先用这个技能，哪怕用户只说“加个任务流程”“加个节点”“做个状态机”。
 ---
 
 # 机器人行为树框架范本（bt_xml_planner）
 
-源码：`Cyber_Guide_Dog/Traj_planning/bt_planner/`，三个 colcon 包：
+源码：`robot/Traj_planning/bt_planner/`，三个 colcon 包：
 
 | 包 | 内容 |
 |---|---|

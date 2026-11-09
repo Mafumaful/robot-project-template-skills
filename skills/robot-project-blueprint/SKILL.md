@@ -1,11 +1,11 @@
 ---
 name: robot-project-blueprint
-description: 以 Cyber Guide Dog（ROS 2 导盲机器人）为范本的项目总蓝图：设计理念、系统分层与数据流、仓库目录、包与话题命名、参数/launch/systemd 组织、安全与看门狗原则，并索引行为树(robot-bt-framework)、运维网页(ops-console-web)、工程流程(robot-dev-workflow)三个子技能。用户开始任何新项目（尤其机器人、ROS、嵌入式、带硬件或带网页控制台的项目）、说“按之前那个项目的方式做”“参考 Cyber Guide Dog/导盲犬项目”“搭个项目框架”“规划架构”“项目初始化”时，先用这个技能。
+description: 以 robot（ROS 2 导盲机器人）为范本的项目总蓝图：设计理念、系统分层与数据流、仓库目录、包与话题命名、参数/launch/systemd 组织、安全与看门狗原则，并索引行为树(robot-bt-framework)、运维网页(ops-console-web)、工程流程(robot-dev-workflow)三个子技能。用户开始任何新项目（尤其机器人、ROS、嵌入式、带硬件或带网页控制台的项目）、说“按之前那个项目的方式做”“参考 robot/导盲犬项目”“搭个项目框架”“规划架构”“项目初始化”时，先用这个技能。
 ---
 
-# 项目总蓝图（范本：Cyber Guide Dog）
+# 项目总蓝图（范本：robot）
 
-用户把 Cyber Guide Dog 定为之后所有项目的范本。新项目开工时：先读本文件定架构和原则，再按需加载子技能。
+用户把 robot 定为之后所有项目的范本。新项目开工时：先读本文件定架构和原则，再按需加载子技能。
 
 **继承的是模式，不是数值。** 本技能和子技能里的具体端口（8090/8765/5000）、话题名、DOMAIN_ID、阈值、主机别名（Mini6Test、server5090）、目录（~/cdm_data、~/pkg_bak）都是范本项目的实例。新项目照搬结构和原则，具体值要按新项目重新定，未知的写成 `<待定>` 占位并列进“需要你决定的事”。
 

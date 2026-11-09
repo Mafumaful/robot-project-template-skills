@@ -1,6 +1,6 @@
 # Robot Project Template Skills
 
-把 Cyber Guide Dog（ROS 2 导盲机器人）整理成项目范本，打包成 4 个 Claude Code 技能。之后的新项目都按这里的模式来做。
+把 robot（ROS 2 导盲机器人）整理成项目范本，打包成 4 个 Claude Code 技能。之后的新项目都按这里的模式来做。
 
 ![四个技能的关系](images/skills-overview.svg)
 
