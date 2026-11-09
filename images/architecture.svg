@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" font-family="PingFang SC, Noto Sans CJK SC, Microsoft YaHei, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="d" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#8a97ab"/></marker>
+    <marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#3577d4"/></marker>
+  </defs>
+  <rect width="960" height="600" rx="18" fill="#eef2f8"/>
+  <text x="32" y="44" font-size="20" font-weight="700" fill="#243042">系统分层与数据流</text>
+  <text x="32" y="68" font-size="13" fill="#5a6577">左列是控制链（自上而下），右列三层只通过 action / service 调能力，不直接碰速度和硬件</text>
+
+  <!-- control chain -->
+  <g font-size="14">
+    <rect x="32" y="92" width="470" height="54" rx="12" fill="#fff" stroke="#d6deea"/>
+    <text x="50" y="116" font-weight="700" fill="#243042">传感器</text>
+    <text x="50" y="136" font-size="12" fill="#5a6577">激光雷达 · IMU · TOF 8×8 · 相机 · 超声</text>
+
+    <rect x="32" y="162" width="470" height="54" rx="12" fill="#fff" stroke="#d6deea"/>
+    <text x="50" y="186" font-weight="700" fill="#243042">定位 / 建图</text>
+    <text x="50" y="206" font-size="12" fill="#5a6577">LIO 定位 (map→base_link) · 建图 + 回环 · 重定位 (ICP 门)</text>
+
+    <rect x="32" y="232" width="470" height="54" rx="12" fill="#fff" stroke="#d6deea"/>
+    <text x="50" y="256" font-weight="700" fill="#243042">世界模型</text>
+    <text x="50" y="276" font-size="12" fill="#5a6577">全局 / 局部代价地图 · 障碍层 · TOF 层 · 膨胀</text>
+
+    <rect x="32" y="302" width="470" height="54" rx="12" fill="#fff" stroke="#d6deea"/>
+    <text x="50" y="326" font-weight="700" fill="#243042">规划</text>
+    <text x="50" y="346" font-size="12" fill="#5a6577">分层路网规划 → 局部路径规划</text>
+
+    <rect x="32" y="372" width="470" height="54" rx="12" fill="#fff" stroke="#d6deea"/>
+    <text x="50" y="396" font-weight="700" fill="#243042">控制</text>
+    <text x="50" y="416" font-size="12" fill="#5a6577">MPPI 类控制器 → 速度平滑</text>
+
+    <rect x="32" y="442" width="470" height="54" rx="12" fill="#fde9ec" stroke="#e7a4ae"/>
+    <text x="50" y="466" font-weight="700" fill="#a3253a">仲裁 / 安全</text>
+    <text x="50" y="486" font-size="12" fill="#a3253a">模式 STOP/RUN · 心跳 300 ms 无指令即停 · 单一发布者 · 急停锁存</text>
+
+    <rect x="32" y="512" width="470" height="54" rx="12" fill="#fff" stroke="#d6deea"/>
+    <text x="50" y="536" font-weight="700" fill="#243042">执行器</text>
+    <text x="50" y="556" font-size="12" fill="#5a6577">底盘驱动 (CAN / RS485) → 轮速里程计 · 电量</text>
+  </g>
+  <g stroke="#8a97ab" stroke-width="2" marker-end="url(#d)">
+    <line x1="470" y1="146" x2="470" y2="160"/><line x1="470" y1="216" x2="470" y2="230"/>
+    <line x1="470" y1="286" x2="470" y2="300"/><line x1="470" y1="356" x2="470" y2="370"/>
+    <line x1="470" y1="426" x2="470" y2="440"/><line x1="470" y1="496" x2="470" y2="510"/>
+  </g>
+
+  <!-- side lanes -->
+  <g font-size="14">
+    <rect x="590" y="92" width="338" height="150" rx="14" fill="#e6f4ec" stroke="#9fd2b6"/>
+    <text x="610" y="120" font-weight="700" fill="#1f6b47">任务层 · 行为树</text>
+    <text x="610" y="146" font-size="12" fill="#1f6b47">App / 网页 / 语音 → /mission/start</text>
+    <text x="610" y="168" font-size="12" fill="#1f6b47">mission_bt_node 拥有全部决策：</text>
+    <text x="610" y="188" font-size="12" fill="#1f6b47">执行、切图、失败处理、播报</text>
+    <text x="610" y="216" font-size="12" font-weight="700" fill="#1f6b47">robot-bt-framework</text>
+
+    <rect x="590" y="262" width="338" height="120" rx="14" fill="#f4eefb" stroke="#cdb6ec"/>
+    <text x="610" y="290" font-weight="700" fill="#5b3a91">交互层</text>
+    <text x="610" y="316" font-size="12" fill="#5b3a91">语音 /speech/say：预录音 → 云 TTS → 文字日志</text>
+    <text x="610" y="338" font-size="12" fill="#5b3a91">视觉 VLM：拍照 → 判定 → JSON</text>
+    <text x="610" y="360" font-size="12" fill="#5b3a91">播报永不阻塞导航</text>
+
+    <rect x="590" y="402" width="338" height="164" rx="14" fill="#e7effb" stroke="#a9c3ea"/>
+    <text x="610" y="430" font-weight="700" fill="#24589f">运维层 · 网页控制台</text>
+    <text x="610" y="456" font-size="12" fill="#24589f">systemd 节点组启停 · 版本 · 建图 · 重定位</text>
+    <text x="610" y="478" font-size="12" fill="#24589f">回放 · 参数 · 模块调试</text>
+    <text x="610" y="500" font-size="12" fill="#24589f">只经受控接口管进程、读状态</text>
+    <text x="610" y="540" font-size="12" font-weight="700" fill="#24589f">ops-console-web</text>
+  </g>
+  <g stroke="#3577d4" stroke-width="2" fill="none" stroke-dasharray="5 4" marker-end="url(#r)">
+    <path d="M590 168 C 540 168 540 329 506 329"/>
+    <path d="M760 262 V246"/>
+    <path d="M590 484 C 548 484 548 469 506 469"/>
+  </g>
+  <text x="512" y="352" font-size="11" fill="#3577d4">action/service</text>
+  <text x="770" y="257" font-size="11" fill="#5b3a91">BT 调用</text>
+</svg>

@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 420" font-family="PingFang SC, Noto Sans CJK SC, Microsoft YaHei, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#8a97ab"/></marker>
+  </defs>
+  <rect width="960" height="420" rx="18" fill="#eef2f8"/>
+  <!-- blueprint -->
+  <rect x="300" y="28" width="360" height="118" rx="16" fill="#3577d4"/>
+  <text x="480" y="62" text-anchor="middle" font-size="20" font-weight="700" fill="#fff">robot-project-blueprint</text>
+  <text x="480" y="88" text-anchor="middle" font-size="14" fill="#e3ecfa">总入口 · 新项目开工先读</text>
+  <text x="480" y="112" text-anchor="middle" font-size="13" fill="#e3ecfa">12 条理念 · 系统分层 · 仓库目录 · 命名 · 节点组</text>
+  <text x="480" y="132" text-anchor="middle" font-size="12" fill="#c9daf5">继承的是模式，不是数值</text>
+  <!-- arrows -->
+  <path d="M400 146 L170 220" stroke="#8a97ab" stroke-width="2" fill="none" marker-end="url(#a)"/>
+  <path d="M480 146 L480 220" stroke="#8a97ab" stroke-width="2" fill="none" marker-end="url(#a)"/>
+  <path d="M560 146 L790 220" stroke="#8a97ab" stroke-width="2" fill="none" marker-end="url(#a)"/>
+  <!-- three sub skills -->
+  <g>
+    <rect x="30" y="224" width="280" height="170" rx="16" fill="#fff" stroke="#d6deea"/>
+    <rect x="30" y="224" width="6" height="170" rx="3" fill="#2f9e6b"/>
+    <text x="54" y="256" font-size="17" font-weight="700" fill="#243042">robot-bt-framework</text>
+    <text x="54" y="280" font-size="13" fill="#5a6577">行为树：任务怎么编排</text>
+    <text x="54" y="310" font-size="13" fill="#243042">· Stop/Pause/Active/Idle 根树</text>
+    <text x="54" y="332" font-size="13" fill="#243042">· 黑板约定 · 节点模板</text>
+    <text x="54" y="354" font-size="13" fill="#243042">· 唯一的到达裁定 · 有界恢复</text>
+    <text x="54" y="376" font-size="13" fill="#243042">· 快照诊断 · gtest/仿真验收</text>
+  </g>
+  <g>
+    <rect x="340" y="224" width="280" height="170" rx="16" fill="#fff" stroke="#d6deea"/>
+    <rect x="340" y="224" width="6" height="170" rx="3" fill="#3577d4"/>
+    <text x="364" y="256" font-size="17" font-weight="700" fill="#243042">ops-console-web</text>
+    <text x="364" y="280" font-size="13" fill="#5a6577">网页控制台：人怎么操作</text>
+    <text x="364" y="310" font-size="13" fill="#243042">· oklch hue-250 视觉 token</text>
+    <text x="364" y="332" font-size="13" fill="#243042">· 每个操作都有进度条</text>
+    <text x="364" y="354" font-size="13" fill="#243042">· 急停免登录 · 关页面即停车</text>
+    <text x="364" y="376" font-size="13" fill="#243042">· 调试模块必带测试手册</text>
+  </g>
+  <g>
+    <rect x="650" y="224" width="280" height="170" rx="16" fill="#fff" stroke="#d6deea"/>
+    <rect x="650" y="224" width="6" height="170" rx="3" fill="#c48a12"/>
+    <text x="674" y="256" font-size="17" font-weight="700" fill="#243042">robot-dev-workflow</text>
+    <text x="674" y="280" font-size="13" fill="#5a6577">工程流程：代码怎么上机器人</text>
+    <text x="674" y="310" font-size="13" fill="#243042">· worktree · 提交与 PR 模板</text>
+    <text x="674" y="332" font-size="13" fill="#243042">· 预演→备份→同步→校验→回滚</text>
+    <text x="674" y="354" font-size="13" fill="#243042">· 离线优先的测试分层</text>
+    <text x="674" y="376" font-size="13" fill="#243042">· 源码已同步/已部署/已验证</text>
+  </g>
+</svg>

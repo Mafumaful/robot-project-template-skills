@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" font-family="PingFang SC, Noto Sans CJK SC, Microsoft YaHei, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#8a97ab"/></marker>
+  </defs>
+  <rect width="960" height="640" rx="18" fill="#eef2f8"/>
+  <text x="32" y="44" font-size="20" font-weight="700" fill="#243042">行为树结构</text>
+  <text x="32" y="68" font-size="13" fill="#5a6577">每个 tick 从左往右：先查停止、再查暂停，最后才执行任务；一个文件一棵树，SubTreePlus 显式列出共享黑板键</text>
+
+  <!-- root -->
+  <rect x="330" y="88" width="300" height="46" rx="12" fill="#3577d4"/>
+  <text x="480" y="117" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">ReactiveFallback · UnifiedMissionRoot</text>
+  <g stroke="#8a97ab" stroke-width="2" fill="none">
+    <path d="M480 134 V150 H140 V166"/><path d="M480 150 H370 V166"/><path d="M480 150 H600 V166"/><path d="M480 150 H830 V166"/>
+  </g>
+  <g font-size="13">
+    <rect x="40" y="166" width="200" height="92" rx="12" fill="#fde9ec" stroke="#e7a4ae"/>
+    <text x="56" y="190" font-weight="700" fill="#a3253a">① StopBranch</text>
+    <text x="56" y="212" font-size="12" fill="#a3253a">IsStopRequested</text>
+    <text x="56" y="232" font-size="12" fill="#a3253a">→ CancelNavigation</text>
+    <text x="56" y="250" font-size="12" fill="#a3253a">→ WaitUntilStopped 5 s</text>
+
+    <rect x="270" y="166" width="200" height="92" rx="12" fill="#fbf1d6" stroke="#e5c779"/>
+    <text x="286" y="190" font-weight="700" fill="#80590a">② PauseBranch</text>
+    <text x="286" y="212" font-size="12" fill="#80590a">IsPauseRequested</text>
+    <text x="286" y="232" font-size="12" fill="#80590a">→ 取消 + 等停稳</text>
+    <text x="286" y="250" font-size="12" fill="#80590a">操作员暂停不自动恢复</text>
+
+    <rect x="500" y="166" width="200" height="92" rx="12" fill="#e6f4ec" stroke="#9fd2b6"/>
+    <text x="516" y="190" font-weight="700" fill="#1f6b47">③ ActiveMission</text>
+    <text x="516" y="212" font-size="12" fill="#1f6b47">IsMissionActive</text>
+    <text x="516" y="232" font-size="12" fill="#1f6b47">→ SubTreePlus 任务子树</text>
+    <text x="516" y="250" font-size="12" fill="#1f6b47">（展开见下）</text>
+
+    <rect x="730" y="166" width="200" height="92" rx="12" fill="#fff" stroke="#d6deea"/>
+    <text x="746" y="190" font-weight="700" fill="#243042">④ IdleBranch</text>
+    <text x="746" y="212" font-size="12" fill="#5a6577">无任务 · 未暂停</text>
+    <text x="746" y="232" font-size="12" fill="#5a6577">· 未停止</text>
+  </g>
+
+  <!-- mission pipeline -->
+  <path d="M600 258 V286 H480 V298" stroke="#8a97ab" stroke-width="2" fill="none" marker-end="url(#a)"/>
+  <rect x="40" y="300" width="890" height="70" rx="14" fill="#fff" stroke="#d6deea"/>
+  <text x="58" y="324" font-size="13" font-weight="700" fill="#243042">任务子树（线性流水线）</text>
+  <text x="58" y="352" font-size="12" fill="#243042">初始化 → 取位姿 → 规划路线 → 等代价地图（可超时） → <tspan font-weight="700" fill="#3577d4">分段执行循环 ↓</tspan></text>
+
+  <!-- segment loop -->
+  <rect x="40" y="390" width="590" height="224" rx="14" fill="#fff" stroke="#d6deea"/>
+  <text x="58" y="416" font-size="13" font-weight="700" fill="#243042">Repeat(-1) · ReactiveFallback 结果路由</text>
+  <g font-size="12">
+    <rect x="58" y="430" width="554" height="30" rx="8" fill="#f4eefb"/>
+    <text x="70" y="450" fill="#5b3a91">外部阻塞恢复：取消 → 等停 → 拍照 → VLM → 播报 → 堵了就记忆 + 重规划</text>
+    <rect x="58" y="466" width="554" height="52" rx="8" fill="#e7effb"/>
+    <text x="70" y="486" fill="#24589f" font-weight="700">执行当前段</text>
+    <text x="70" y="506" fill="#24589f">选段 → 切图 → 等地图 → 执行动作 → 分类结果 → 验证到达 → 提交进度</text>
+    <rect x="58" y="524" width="554" height="26" rx="8" fill="#f5f7fa"/>
+    <text x="70" y="542" fill="#5a6577">SWITCH_TRANSIENT → 原地重试同一操作</text>
+    <rect x="58" y="554" width="554" height="26" rx="8" fill="#f5f7fa"/>
+    <text x="70" y="572" fill="#5a6577">终点附近失败 → 局部恢复一次</text>
+    <rect x="58" y="584" width="554" height="22" rx="8" fill="#f5f7fa"/>
+    <text x="70" y="600" fill="#5a6577">其它 → 阻塞记忆（TTL）+ 重规划，次数有界（nav_retry_max）</text>
+  </g>
+
+  <!-- arrival contract -->
+  <rect x="650" y="390" width="280" height="224" rx="14" fill="#e6f4ec" stroke="#9fd2b6"/>
+  <text x="668" y="418" font-size="14" font-weight="700" fill="#1f6b47">到达契约（唯一裁定者）</text>
+  <text x="668" y="440" font-size="12" fill="#1f6b47">VerifyGoalReached 才能判到达；</text>
+  <text x="668" y="458" font-size="12" fill="#1f6b47">动作服务器“成功”≠ 任务成功</text>
+  <g font-size="12" fill="#243042">
+    <text x="668" y="488">· TF 年龄 ≤ 0.5 s</text>
+    <text x="668" y="508">· 位置误差 ≤ 0.30 m</text>
+    <text x="668" y="528">· v &lt; 0.05 m/s 且 ω &lt; 0.05 rad/s</text>
+    <text x="668" y="548">· 连续 3 个稳定样本</text>
+    <text x="668" y="568">· align_yaw=false 时朝向只报告</text>
+  </g>
+  <text x="668" y="598" font-size="12" font-weight="700" fill="#a3253a">恢复成功 ≠ 航点完成（失败关闭）</text>
+  <path d="M612 492 H648" stroke="#2f9e6b" stroke-width="2" fill="none" marker-end="url(#a)"/>
+</svg>

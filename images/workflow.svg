@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 530" font-family="PingFang SC, Noto Sans CJK SC, Microsoft YaHei, Helvetica, Arial, sans-serif">
+  <rect width="960" height="530" rx="18" fill="#eef2f8"/>
+  <text x="32" y="44" font-size="20" font-weight="700" fill="#243042">部署到设备（生产机默认只读）</text>
+  <text x="32" y="68" font-size="13" fill="#5a6577">每一步都可核对；真实同步、编译、重启前先给用户看预演结果并取得确认</text>
+
+  <g font-size="13" text-anchor="middle">
+    <g transform="translate(32,88)">
+      <rect width="118" height="86" rx="12" fill="#fff" stroke="#d6deea"/>
+      <text x="59" y="28" font-weight="700" fill="#243042">1 守卫</text>
+      <text x="59" y="50" font-size="11" fill="#5a6577">手动模式</text>
+      <text x="59" y="66" font-size="11" fill="#5a6577">任务空闲 · 有人在旁</text>
+    </g>
+    <g transform="translate(160,88)">
+      <rect width="118" height="86" rx="12" fill="#fff" stroke="#d6deea"/>
+      <text x="59" y="28" font-weight="700" fill="#243042">2 预演</text>
+      <text x="59" y="50" font-size="11" fill="#5a6577">rsync -n 列文件</text>
+      <text x="59" y="66" font-size="11" fill="#5a6577">用户确认</text>
+    </g>
+    <g transform="translate(288,88)">
+      <rect width="118" height="86" rx="12" fill="#fbf1d6" stroke="#e5c779"/>
+      <text x="59" y="28" font-weight="700" fill="#80590a">3 备份</text>
+      <text x="59" y="50" font-size="11" fill="#80590a">pkg_bak/时间戳</text>
+      <text x="59" y="66" font-size="11" fill="#80590a">哈希 + ROLLBACK.sh</text>
+    </g>
+    <g transform="translate(416,88)">
+      <rect width="118" height="86" rx="12" fill="#fff" stroke="#d6deea"/>
+      <text x="59" y="28" font-weight="700" fill="#243042">4 同步</text>
+      <text x="59" y="50" font-size="11" fill="#5a6577">不用 --delete</text>
+      <text x="59" y="66" font-size="11" fill="#5a6577">排除 build/install</text>
+    </g>
+    <g transform="translate(544,88)">
+      <rect width="118" height="86" rx="12" fill="#fff" stroke="#d6deea"/>
+      <text x="59" y="28" font-weight="700" fill="#243042">5 只编译该包</text>
+      <text x="59" y="50" font-size="11" fill="#5a6577">--packages-select</text>
+      <text x="59" y="66" font-size="11" fill="#5a6577">tmp + mv 原子替换</text>
+    </g>
+    <g transform="translate(672,88)">
+      <rect width="118" height="86" rx="12" fill="#e6f4ec" stroke="#9fd2b6"/>
+      <text x="59" y="28" font-weight="700" fill="#1f6b47">6 校验</text>
+      <text x="59" y="50" font-size="11" fill="#1f6b47">哈希 · /proc maps</text>
+      <text x="59" y="66" font-size="11" fill="#1f6b47">节点名唯一</text>
+    </g>
+    <g transform="translate(800,88)">
+      <rect width="128" height="86" rx="12" fill="#fff" stroke="#d6deea"/>
+      <text x="64" y="28" font-weight="700" fill="#243042">7 记录</text>
+      <text x="64" y="50" font-size="11" fill="#5a6577">时间 · 提交 · 备份</text>
+      <text x="64" y="66" font-size="11" fill="#5a6577">回滚命令 · 验证状态</text>
+    </g>
+  </g>
+  <path d="M347 182 V202 H862 V182" stroke="#c48a12" stroke-width="2" fill="none" stroke-dasharray="5 4"/>
+  <text x="604" y="222" text-anchor="middle" font-size="12" fill="#80590a">任何一步出问题：运行备份目录里的 ROLLBACK.sh，节点列表与部署前快照对比</text>
+
+  <!-- three states -->
+  <text x="32" y="270" font-size="16" font-weight="700" fill="#243042">三种状态，永远分开说</text>
+  <g font-size="13">
+    <rect x="32" y="284" width="280" height="54" rx="27" fill="#fff" stroke="#d6deea"/>
+    <circle cx="60" cy="311" r="9" fill="#2f9e6b"/><text x="78" y="316" fill="#243042">源码已同步</text>
+    <rect x="340" y="284" width="280" height="54" rx="27" fill="#fff" stroke="#d6deea"/>
+    <circle cx="368" cy="311" r="9" fill="#2f9e6b"/><text x="386" y="316" fill="#243042">服务已部署</text>
+    <rect x="648" y="284" width="280" height="54" rx="27" fill="#fde9ec" stroke="#e7a4ae"/>
+    <circle cx="676" cy="311" r="9" fill="none" stroke="#d9475a" stroke-width="2"/><text x="694" y="316" fill="#a3253a">实机已验证（没人试过就不算）</text>
+  </g>
+
+  <!-- test layers -->
+  <text x="32" y="384" font-size="16" font-weight="700" fill="#243042">测试分层：离线优先，从零风险到有风险</text>
+  <g font-size="12" text-anchor="middle">
+    <rect x="32" y="398" width="124" height="92" rx="10" fill="#e6f4ec"/>
+    <text x="94" y="428" font-weight="700" fill="#1f6b47">契约测试</text><text x="94" y="450" fill="#1f6b47">Mac 纯 Python</text><text x="94" y="468" fill="#1f6b47">钉死 launch 默认值</text>
+    <rect x="166" y="398" width="124" height="92" rx="10" fill="#e6f4ec"/>
+    <text x="228" y="428" font-weight="700" fill="#1f6b47">控制台单元</text><text x="228" y="450" fill="#1f6b47">unittest</text><text x="228" y="468" fill="#1f6b47">FakeRunner 注入</text>
+    <rect x="300" y="398" width="124" height="92" rx="10" fill="#eaf2e6"/>
+    <text x="362" y="428" font-weight="700" fill="#35662a">colcon</text><text x="362" y="450" fill="#35662a">构建服务器 Docker</text><text x="362" y="468" fill="#35662a">拷贝源码不挂载</text>
+    <rect x="434" y="398" width="124" height="92" rx="10" fill="#f2f0dc"/>
+    <text x="496" y="428" font-weight="700" fill="#6b5a12">仿真验收</text><text x="496" y="450" fill="#6b5a12">Gazebo 无头</text><text x="496" y="468" fill="#6b5a12">独立 DOMAIN_ID</text>
+    <rect x="568" y="398" width="124" height="92" rx="10" fill="#f8eedb"/>
+    <text x="630" y="428" font-weight="700" fill="#80590a">离线仿真</text><text x="630" y="450" fill="#80590a">rosbag 回放</text><text x="630" y="468" fill="#80590a">参数矩阵 A/B</text>
+    <rect x="702" y="398" width="104" height="92" rx="10" fill="#fbe8dd"/>
+    <text x="754" y="428" font-weight="700" fill="#8a4a1c">真机观察</text><text x="754" y="450" fill="#8a4a1c">只读脚本</text><text x="754" y="468" fill="#8a4a1c">curl GET</text>
+    <rect x="816" y="398" width="112" height="92" rx="10" fill="#fde9ec"/>
+    <text x="872" y="428" font-weight="700" fill="#a3253a">真机运动</text><text x="872" y="450" fill="#a3253a">有人 · 手按急停</text><text x="872" y="468" fill="#a3253a">首个目标 2–3 m</text>
+  </g>
+  <text x="32" y="516" font-size="12" fill="#5a6577">风险从左到右递增 →</text>
+</svg>
